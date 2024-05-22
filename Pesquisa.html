@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pesquisa de Satisfação</title>
+</head>
+<body>
+  <h1>Pesquisa de Satisfação</h1>
+  <form id="survey-form">
+    <label for="activity">Atividade:</label>
+    <input type="text" id="activity" name="activity" required><br><br>
+    
+    <label>Como você avalia a atividade?</label><br>
+    <input type="radio" id="detestei" name="satisfaction" value="detestei" required>
+    <label for="detestei">Detestei</label><br>
+    <input type="radio" id="naoGostei" name="satisfaction" value="naoGostei">
+    <label for="naoGostei">Não gostei</label><br>
+    <input type="radio" id="indiferente" name="satisfaction" value="indiferente">
+    <label for="indiferente">Indiferente</label><br>
+    <input type="radio" id="gostei" name="satisfaction" value="gostei">
+    <label for="gostei">Gostei</label><br>
+    <input type="radio" id="gosteiMuito" name="satisfaction" value="gosteiMuito">
+    <label for="gosteiMuito">Gostei muito</label><br><br>
+    
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    document.getElementById('survey-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      var activity = document.getElementById('activity').value;
+      var satisfaction = document.querySelector('input[name="satisfaction"]:checked').value;
+      
+      var data = {
+        activity: activity,
+        detestei: satisfaction === 'detestei' ? 1 : 0,
+        naoGostei: satisfaction === 'naoGostei' ? 1 : 0,
+        indiferente: satisfaction === 'indiferente' ? 1 : 0,
+        gostei: satisfaction === 'gostei' ? 1 : 0,
+        gosteiMuito: satisfaction === 'gosteiMuito' ? 1 : 0
+      };
+      
+      fetch('https://script.google.com/macros/s/AKfycbwP_1UMgA5ZuHahArB6ZjZpmXbMAluEGLQ7M7yeS5SuSSeqQJwG3Jdskm4M6oJGLFMy/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text())
+      .then(text => alert(text))
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
+
